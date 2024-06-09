@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "cba-wl"
+version = "0.1.0"
+description = ""
+authors = ["wei <yie099063@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.2.2"
+ipykernel = "^6.29.4"
+mlxtend = "^0.23.1"
+ucimlrepo = "^0.0.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
