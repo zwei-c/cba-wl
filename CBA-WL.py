@@ -15,25 +15,6 @@ class CBA_WL:
         features = dataset.data.features
         target = dataset.data.targets
 
-        df = pd.DataFrame(features, columns=dataset.feature_names)
-        df['target'] = target
-
-        X = df.drop('target', axis=1)
-        y = df['target']
-
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42)
-
-        X_train.reset_index(drop=True, inplace=True)
-        X_test.reset_index(drop=True, inplace=True)
-        y_train.reset_index(drop=True, inplace=True)
-        y_test.reset_index(drop=True, inplace=True)
-
-        train = pd.concat([X_train, y_train], axis=1)
-        test = pd.concat([X_test, y_test], axis=1)
-
-        return X_train, X_test, y_train, y_test, train, test
-
     def randomForestFeatureImportances(self):
         print('Random Forest Feature Importances')
 
