@@ -13,6 +13,7 @@ class DataProcessing():
 
     def __init__(self, data_name):
         self.data_path = os.path.join(os.getcwd(), "data", data_name)
+        self.data_path = f"https://archive.ics.uci.edu/static/public/19/data.csv"
         self.data: pd.DataFrame = None
         self.encoded_data: pd.DataFrame = None
         self.feature_importances: list = None
@@ -84,6 +85,7 @@ if __name__ == "__main__":
     data_processing = DataProcessing("car.data")
     data_processing.read_data()
     data_processing.process()
+    print(data_processing.encoded_data)
     data_processing.get_feature_importances()
-    data_processing.delete_low_importance()
-    print(data_processing.feature_importances)
+    # data_processing.delete_low_importance()
+    # print(data_processing.feature_importances)
