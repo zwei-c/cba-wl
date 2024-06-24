@@ -164,7 +164,7 @@ class CBAWL:
 
 
 if __name__ == '__main__':
-    dataset_id = 53
+    dataset_id = 19
 
     cbawl = CBAWL(dataset_id, min_support=0.1, min_confidence=0.5, min_lift=1)
     data = cbawl.dataHandler.loadData()
@@ -173,7 +173,7 @@ if __name__ == '__main__':
     features = cbawl.dataHandler.delLowImportanceFeatures(data, features_importance)
     X = features
     y = data.iloc[:, -1]
-    kf = KFold(n_splits=5, shuffle=True, random_state=42)
+    kf = KFold(n_splits=10, shuffle=True, random_state=42)
     for train_index, test_index in kf.split(X):
         X_train, X_test = X.iloc[train_index], X.iloc[test_index]
         y_train, y_test = y.iloc[train_index], y.iloc[test_index]
