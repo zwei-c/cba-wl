@@ -39,8 +39,8 @@ class RuleGenerator:
             support, confidence, lift = self.computeSupportAndConfidenceAndLift(
                 data, candidate_rule)
             if (confidence >= self.min_confidence and lift >= self.min_lift):
-                # harmonic_mean = 2 / (1/confidence + 1/lift)
-                harmonic_mean = confidence
+                harmonic_mean = 2 / (1/confidence + 1/lift)
+                # harmonic_mean = confidence
                 if harmonic_mean > max_harmonic_mean:
                     max_harmonic_mean = harmonic_mean
                     rule = candidate_rule
@@ -66,9 +66,18 @@ class RuleGenerator:
                 data[key] == value) if condition_without_target is not None else (data[key] == value)
         if data[condition_without_target].shape[0] == 0:
             return 0, 0, 0
-        support = data[condition].shape[0] / data.shape[0]
-        confidence = data[condition].shape[0] / data[condition_without_target].shape[0]
-        lift = confidence / (data[data[target_name] == target].shape[0] / data.shape[0])
+
+        condSupportCount = data[condition_without_target].shape[0]
+        ruleSupportCount = data[condition].shape[0]
+        targetCount = data[data[target_name] == target].shape[0]
+        dataCount = data.shape[0]
+
+        if condSupportCount == 0 or ruleSupportCount == 0 or targetCount == 0 or dataCount == 0:
+            return 0, 0, 0
+
+        support = ruleSupportCount / dataCount
+        confidence = ruleSupportCount / condSupportCount
+        lift = confidence / (targetCount / dataCount)
         return support, confidence, lift
 
 
