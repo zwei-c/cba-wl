@@ -113,7 +113,7 @@ class RWCBA:
                 rules.append(ruleitem)
 
                 # 確定預設類別
-                default_class = data_['class'].value_counts().idxmax()
+                default_class = data_['class'].value_counts().idxmax() if data_.shape[0] != 0 else None
                 y = self.predict_for_prune(rules, default_class)
 
                 # 計算錯誤率

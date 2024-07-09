@@ -175,20 +175,19 @@ class CBAWL:
 if __name__ == '__main__':
     dataset_id = 19
 
-    cbawl = CBAWL(dataset_id, min_support=0.1, min_confidence=0.5, min_lift=1)
+    cbawl = CBAWL(dataset_id, min_support=0.01, min_confidence=0.5, min_lift=1)
     data = cbawl.dataHandler.loadData()
-    features = cbawl.dataHandler.oneHotEncoding(data)
     features_importance = cbawl.dataHandler.getFeaturesImportance(data)
-    features = cbawl.dataHandler.delLowImportanceFeatures(data, features_importance)
-    X = features
-    y = data.iloc[:, -1]
-    kf = KFold(n_splits=10, shuffle=True, random_state=42)
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
-        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
-        X_train_te = cbawl.dataHandler.oneHotEncoding(X_train)
-        frequent_itemsets = cbawl.ruleGenerator.getFrequentItemsets(X_train_te)
-        strong_rules, weak_rules, default_class = cbawl.model(frequent_itemsets, X_train)
-        y_pred = cbawl.predict(strong_rules, weak_rules, default_class, X_test)
+    features = data.drop(data.columns[-1], axis=1)
+    features = cbawl.dataHandler.delLowImportanceFeatures(features, features_importance)
+    X_train_te = cbawl.dataHandler.oneHotEncoding(features)
+    frequent_itemsets = cbawl.ruleGenerator.getFrequentItemsets(X_train_te)
+    strong_rules, weak_rules, default_class = cbawl.model(frequent_itemsets, data)
 
-        print(classification_report(y_test, y_pred, zero_division=0))
+    for rule in strong_rules:
+        print(rule)
+
+    print("Default class: ", default_class)
+    # y_pred = cbawl.predict(strong_rules, weak_rules, default_class, X_test)
+
+    # print(classification_report(y_test, y_pred, zero_division=0))

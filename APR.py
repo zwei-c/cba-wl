@@ -97,14 +97,14 @@ class APR:
         rules = []
         default_class = data_['class'].value_counts().idxmax()
 
-        while not data_.empty:
+        while not data_.empty and sorted_ruleitemset:
             selected_rule = sorted_ruleitemset[0]
             cover_index = [index for index, row in data_.iterrows() if self.cover_for_prune(selected_rule, row)]
 
             if cover_index:
                 data_ = data_.drop(cover_index, axis=0)
                 rules.append(selected_rule)
-                default_class = data_['class'].value_counts().idxmax()
+                default_class = data_['class'].value_counts().idxmax() if data_.shape[0] != 0 else default_class
 
                 sorted_ruleitemset_ = sorted_ruleitemset[1:]
                 ruleitemset = []
